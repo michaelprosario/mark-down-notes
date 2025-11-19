@@ -25,15 +25,15 @@
 
 **Purpose**: Initialize project structure and development environment
 
-- [ ] T001 Create backend directory structure: backend/src/{core,infrastructure,api}, backend/tests/{unit,integration,fixtures}
-- [ ] T002 Initialize Python project with pyproject.toml and requirements.txt per quickstart.md
-- [ ] T003 [P] Create .env.example file with all required environment variables
-- [ ] T004 [P] Create backend/src/main.py FastAPI application entry point with basic app initialization
-- [ ] T005 [P] Setup Alembic for database migrations in backend/migrations/
-- [ ] T006 [P] Create pytest.ini and configure pytest-asyncio
-- [ ] T007 [P] Create .gitignore for Python, virtual environments, and database files
-- [ ] T008 [P] Setup static file directories: backend/src/api/static/{css,js,images}
-- [ ] T009 [P] Create base Jinja2 template structure: backend/src/api/templates/base.html
+- [X] T001 Create backend directory structure: backend/src/{core,infrastructure,api}, backend/tests/{unit,integration,fixtures}
+- [X] T002 Initialize Python project with pyproject.toml and requirements.txt per quickstart.md
+- [X] T003 [P] Create .env.example file with all required environment variables
+- [X] T004 [P] Create backend/src/main.py FastAPI application entry point with basic app initialization
+- [X] T005 [P] Setup Alembic for database migrations in backend/migrations/
+- [X] T006 [P] Create pytest.ini and configure pytest-asyncio
+- [X] T007 [P] Create .gitignore for Python, virtual environments, and database files
+- [X] T008 [P] Setup static file directories: backend/src/api/static/{css,js,images}
+- [X] T009 [P] Create base Jinja2 template structure: backend/src/api/templates/base.html
 
 ---
 
@@ -45,10 +45,10 @@
 
 ### Core Architecture
 
-- [ ] T010 [P] Create Result wrapper class in backend/src/core/results/result.py for success/failure handling
-- [ ] T011 [P] Create base Command class in backend/src/core/commands/base.py
-- [ ] T012 [P] Create base Query class in backend/src/core/queries/base.py
-- [ ] T013 [P] Create TimestampMixin and SoftDeleteMixin in backend/src/infrastructure/data/models/base.py
+- [X] T010 [P] Create Result wrapper class in backend/src/core/results/result.py for success/failure handling
+- [X] T011 [P] Create base Command class in backend/src/core/commands/base.py
+- [X] T012 [P] Create base Query class in backend/src/core/queries/base.py
+- [X] T013 [P] Create TimestampMixin and SoftDeleteMixin in backend/src/infrastructure/data/models/base.py
 
 ### Database Setup
 
