@@ -1,0 +1,16 @@
+<!-- Sections Area Component -->
+<div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+    <h5 class="mb-0" id="sectionsTitle">Sections</h5>
+    <button class="btn btn-sm btn-primary" id="btnNewSection" data-bs-toggle="modal" data-bs-target="#sectionModal" disabled>
+        <i class="bi bi-plus-lg"></i>
+    </button>
+</div>
+<div id="sectionsContainer" class="p-3">
+    <div class="text-center text-muted py-5" id="sectionsPlaceholder">
+        <i class="bi bi-collection" style="font-size: 3rem;"></i>
+        <p class="mt-2">Select a notebook to view sections</p>
+    </div>
+    <ul class="nav nav-pills flex-column" id="sectionsList" style="display: none;">
+        <!-- Sections will be dynamically loaded here -->
+    </ul>
+</div>

@@ -118,11 +118,41 @@ const PageManager = {
         document.getElementById('pageMetadata').textContent = 
             `Last updated: ${new Date(page.updated_at).toLocaleString()}`;
         
-        // Render markdown content
+        // Render markdown content (simple conversion for now)
         const content = document.getElementById('pageContent');
         if (content) {
-            content.innerHTML = AppManager.renderMarkdown(page.content);
+            content.innerHTML = this.renderMarkdown(page.content);
         }
+    },
+    
+    /**
+     * Simple markdown rendering
+     */
+    renderMarkdown(markdown) {
+        if (!markdown) return '';
+        
+        let html = this.escapeHtml(markdown);
+        
+        // Headers
+        html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+        html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+        
+        // Bold and italic
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        
+        // Code blocks
+        html = html.replace(/```(.+?)```/gs, '<pre><code>$1</code></pre>');
+        html = html.replace(/`(.+?)`/g, '<code>$1</code>');
+        
+        // Links
+        html = html.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
+        
+        // Line breaks
+        html = html.replace(/\n/g, '<br>');
+        
+        return html;
     },
     
     /**
@@ -156,7 +186,7 @@ const PageManager = {
             document.getElementById('pageId').value = page.id;
             document.getElementById('pageSectionId').value = page.section_id;
             document.getElementById('pageTitle').value = page.title;
-            document.getElementById('pageContentInput').value = page.content;
+            document.getElementById('pageContent').value = page.content;
             document.getElementById('pageOrder').value = page.display_order;
             document.getElementById('pageModalLabel').textContent = 'Edit Page';
             
@@ -182,7 +212,7 @@ const PageManager = {
         const data = {
             section_id: document.getElementById('pageSectionId').value,
             title: document.getElementById('pageTitle').value,
-            content: document.getElementById('pageContentInput').value,
+            content: document.getElementById('pageContent').value,
             display_order: parseInt(document.getElementById('pageOrder').value) || 0
         };
         
@@ -229,7 +259,7 @@ const PageManager = {
      */
     deletePage(pageId) {
         AppManager.showDeleteConfirmation(
-            'Delete this page? (Note: Cannot delete if it has subpages)',
+            'Delete this page?',
             async () => {
                 try {
                     const response = await fetch(`/api/pages/${pageId}`, {
@@ -290,4 +320,3 @@ document.addEventListener('DOMContentLoaded', () => {
         PageManager.showPageModal();
     });
 });
-

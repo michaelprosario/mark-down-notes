@@ -41,7 +41,7 @@ const SectionManager = {
     },
     
     /**
-     * Render sections list
+     * Render sections
      */
     renderSections(sections) {
         const placeholder = document.getElementById('sectionsPlaceholder');
@@ -50,8 +50,14 @@ const SectionManager = {
         if (sections.length === 0) {
             placeholder?.classList.remove('d-none');
             list?.classList.add('d-none');
-            if (window.PageManager) {
-                PageManager.clearPages();
+            if (placeholder) {
+                placeholder.innerHTML = `
+                    <i class="bi bi-collection" style="font-size: 3rem;"></i>
+                    <p class="mt-2">No sections yet</p>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#sectionModal">
+                        Create Section
+                    </button>
+                `;
             }
             return;
         }
@@ -61,17 +67,19 @@ const SectionManager = {
         
         if (list) {
             list.innerHTML = sections.map(section => `
-                <li class="nav-item">
-                    <button class="nav-link ${section.id === this.currentSectionId ? 'active' : ''}"
-                            data-section-id="${section.id}"
-                            onclick="SectionManager.selectSection('${section.id}')">
-                        ${this.escapeHtml(section.name)}
-                        <button class="btn btn-link btn-sm text-danger p-0 ms-2" 
-                                onclick="SectionManager.deleteSection('${section.id}'); event.stopPropagation();"
-                                title="Delete section">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </button>
+                <li class="nav-item mb-2">
+                    <a class="nav-link ${section.id === this.currentSectionId ? 'active' : ''}" 
+                       href="#" 
+                       data-section-id="${section.id}"
+                       onclick="SectionManager.selectSection('${section.id}'); return false;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>${this.escapeHtml(section.name)}</span>
+                            <button class="btn btn-link btn-sm text-danger p-0" 
+                                    onclick="SectionManager.deleteSection('${section.id}'); event.stopPropagation(); return false;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </a>
                 </li>
             `).join('');
         }
@@ -80,17 +88,20 @@ const SectionManager = {
     /**
      * Select a section
      */
-    async selectSection(sectionId) {
+    selectSection(sectionId) {
         this.currentSectionId = sectionId;
         
-        // Update active state
-        document.querySelectorAll('#sectionsList .nav-link').forEach(item => {
-            item.classList.toggle('active', item.dataset.sectionId === sectionId);
+        // Update UI
+        document.querySelectorAll('#sectionsList .nav-link').forEach(link => {
+            link.classList.toggle('active', link.dataset.sectionId === sectionId);
         });
         
-        // Load pages for this section
+        // Enable page button
+        document.getElementById('btnNewPage')?.removeAttribute('disabled');
+        
+        // Load pages
         if (window.PageManager) {
-            await PageManager.loadPages(sectionId);
+            window.PageManager.loadPages(sectionId);
         }
     },
     
@@ -104,7 +115,6 @@ const SectionManager = {
         form.reset();
         document.getElementById('sectionId').value = '';
         document.getElementById('sectionNotebookId').value = this.currentNotebookId;
-        document.getElementById('sectionModalLabel').textContent = 'Create Section';
         
         const bsModal = new bootstrap.Modal(modal);
         bsModal.show();
@@ -120,7 +130,6 @@ const SectionManager = {
             return;
         }
         
-        const sectionId = document.getElementById('sectionId').value;
         const data = {
             notebook_id: document.getElementById('sectionNotebookId').value,
             name: document.getElementById('sectionName').value,
@@ -128,22 +137,11 @@ const SectionManager = {
         };
         
         try {
-            let response;
-            if (sectionId) {
-                // Update
-                response = await fetch(`/api/sections/${sectionId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-            } else {
-                // Create
-                response = await fetch('/api/sections/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-            }
+            const response = await fetch('/api/sections/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
             
             if (!response.ok) {
                 const error = await response.json();
@@ -163,7 +161,7 @@ const SectionManager = {
      */
     deleteSection(sectionId) {
         AppManager.showDeleteConfirmation(
-            'Delete this section? (Note: Cannot delete if it contains pages)',
+            'Delete this section? All pages in this section will also be deleted.',
             async () => {
                 try {
                     const response = await fetch(`/api/sections/${sectionId}`, {
@@ -177,9 +175,7 @@ const SectionManager = {
                     
                     if (this.currentSectionId === sectionId) {
                         this.currentSectionId = null;
-                        if (window.PageManager) {
-                            PageManager.clearPages();
-                        }
+                        if (window.PageManager) window.PageManager.clearPages();
                     }
                     
                     await this.loadSections(this.currentNotebookId);
@@ -200,10 +196,6 @@ const SectionManager = {
         
         placeholder?.classList.remove('d-none');
         list?.classList.add('d-none');
-        
-        if (window.PageManager) {
-            PageManager.clearPages();
-        }
         
         this.currentNotebookId = null;
         this.currentSectionId = null;
@@ -226,4 +218,3 @@ document.addEventListener('DOMContentLoaded', () => {
         SectionManager.showSectionModal();
     });
 });
-

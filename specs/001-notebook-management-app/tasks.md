@@ -155,18 +155,18 @@
 
 ### UI Templates (Presentation Layer)
 
-- [ ] T077 [US1] Create notebooks sidebar component in backend/src/api/templates/components/notebooks_sidebar.html
-- [ ] T078 [US1] Create sections tabs component in backend/src/api/templates/components/sections_tabs.html
-- [ ] T079 [US1] Create pages list component in backend/src/api/templates/components/pages_list.html
-- [ ] T080 [US1] Create notebook/section/page creation modals in backend/src/api/templates/components/modals.html
-- [ ] T081 [US1] Implement main page route GET / in backend/src/api/routes/pages.py serving index.html with initial data
+- [X] T077 [US1] Create notebooks sidebar component in backend/src/api/templates/components/notebooks_sidebar.html
+- [X] T078 [US1] Create sections tabs component in backend/src/api/templates/components/sections_tabs.html
+- [X] T079 [US1] Create pages list component in backend/src/api/templates/components/pages_list.html
+- [X] T080 [US1] Create notebook/section/page creation modals in backend/src/api/templates/components/modals.html
+- [X] T081 [US1] Implement main page route GET / in backend/src/api/routes/pages.py serving index.html with initial data
 
 ### JavaScript Interactivity
 
-- [ ] T082 [US1] Create notebook management JavaScript in backend/src/api/static/js/notebooks.js (CRUD operations)
-- [ ] T083 [US1] Create section management JavaScript in backend/src/api/static/js/sections.js (CRUD + reordering)
-- [ ] T084 [US1] Create page management JavaScript in backend/src/api/static/js/pages.js (CRUD operations)
-- [ ] T085 [US1] Implement confirmation dialogs for delete operations in backend/src/api/static/js/app.js
+- [X] T082 [US1] Create notebook management JavaScript in backend/src/api/static/js/notebooks.js (CRUD operations)
+- [X] T083 [US1] Create section management JavaScript in backend/src/api/static/js/sections.js (CRUD + reordering)
+- [X] T084 [US1] Create page management JavaScript in backend/src/api/static/js/pages.js (CRUD operations)
+- [X] T085 [US1] Implement confirmation dialogs for delete operations in backend/src/api/static/js/app.js
 
 **Checkpoint**: User Story 1 complete - Users can create/organize notebooks, sections, and pages with full hierarchy navigation
 
