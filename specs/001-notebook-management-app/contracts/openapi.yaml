@@ -1,0 +1,1039 @@
+openapi: 3.0.3
+info:
+  title: Notebook Management API
+  description: REST API for managing notebooks, sections, pages, and tags in a hierarchical note-taking system
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://notebooks.example.com
+    description: Production server
+
+tags:
+  - name: notebooks
+    description: Notebook management operations
+  - name: sections
+    description: Section management operations
+  - name: pages
+    description: Page management operations
+  - name: tags
+    description: Tag management operations
+  - name: search
+    description: Search and discovery operations
+
+paths:
+  # Notebook Endpoints
+  /api/notebooks:
+    get:
+      summary: List all notebooks
+      tags: [notebooks]
+      description: Retrieve all non-deleted notebooks for the current user
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notebook'
+    
+    post:
+      summary: Create a new notebook
+      tags: [notebooks]
+      description: Create a new notebook with specified name and color
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNotebookRequest'
+      responses:
+        '201':
+          description: Notebook created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Notebook'
+                  message:
+                    type: string
+                    example: "Notebook created successfully"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /api/notebooks/{notebookId}:
+    get:
+      summary: Get notebook by ID
+      tags: [notebooks]
+      parameters:
+        - $ref: '#/components/parameters/NotebookId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Notebook'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    put:
+      summary: Update notebook
+      tags: [notebooks]
+      parameters:
+        - $ref: '#/components/parameters/NotebookId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotebookRequest'
+      responses:
+        '200':
+          description: Notebook updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Notebook'
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    delete:
+      summary: Delete notebook
+      tags: [notebooks]
+      description: Soft delete a notebook and all its sections/pages
+      parameters:
+        - $ref: '#/components/parameters/NotebookId'
+      responses:
+        '200':
+          description: Notebook deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # Section Endpoints
+  /api/notebooks/{notebookId}/sections:
+    get:
+      summary: List sections in a notebook
+      tags: [sections]
+      parameters:
+        - $ref: '#/components/parameters/NotebookId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Section'
+    
+    post:
+      summary: Create a new section
+      tags: [sections]
+      parameters:
+        - $ref: '#/components/parameters/NotebookId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSectionRequest'
+      responses:
+        '201':
+          description: Section created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Section'
+                  message:
+                    type: string
+
+  /api/sections/{sectionId}:
+    get:
+      summary: Get section by ID
+      tags: [sections]
+      parameters:
+        - $ref: '#/components/parameters/SectionId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Section'
+    
+    put:
+      summary: Update section
+      tags: [sections]
+      parameters:
+        - $ref: '#/components/parameters/SectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSectionRequest'
+      responses:
+        '200':
+          description: Section updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Section'
+    
+    delete:
+      summary: Delete section
+      tags: [sections]
+      parameters:
+        - $ref: '#/components/parameters/SectionId'
+      responses:
+        '200':
+          description: Section deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+
+  /api/sections/{sectionId}/reorder:
+    post:
+      summary: Reorder sections
+      tags: [sections]
+      description: Update display order of sections within a notebook
+      parameters:
+        - $ref: '#/components/parameters/SectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_order:
+                  type: integer
+                  description: New display order position
+      responses:
+        '200':
+          description: Section reordered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+
+  # Page Endpoints
+  /api/sections/{sectionId}/pages:
+    get:
+      summary: List pages in a section
+      tags: [pages]
+      parameters:
+        - $ref: '#/components/parameters/SectionId'
+        - name: include_subpages
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Include nested subpages in response
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Page'
+    
+    post:
+      summary: Create a new page
+      tags: [pages]
+      parameters:
+        - $ref: '#/components/parameters/SectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePageRequest'
+      responses:
+        '201':
+          description: Page created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Page'
+                  message:
+                    type: string
+
+  /api/pages/{pageId}:
+    get:
+      summary: Get page by ID
+      tags: [pages]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/PageDetail'
+    
+    put:
+      summary: Update page
+      tags: [pages]
+      description: Update page title, content, or tags
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePageRequest'
+      responses:
+        '200':
+          description: Page updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Page'
+    
+    delete:
+      summary: Delete page
+      tags: [pages]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          description: Page deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+
+  /api/pages/{pageId}/content:
+    put:
+      summary: Update page content only
+      tags: [pages]
+      description: Auto-save endpoint for content updates (no title/tag changes)
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: Markdown content
+      responses:
+        '200':
+          description: Content saved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "Content auto-saved"
+
+  /api/pages/recent:
+    get:
+      summary: Get recently accessed pages
+      tags: [pages]
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 50
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Page'
+
+  /api/pages/favorites:
+    get:
+      summary: Get favorite pages
+      tags: [pages]
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Page'
+
+  /api/pages/{pageId}/favorite:
+    post:
+      summary: Mark page as favorite
+      tags: [pages]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          description: Page marked as favorite
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+    
+    delete:
+      summary: Remove page from favorites
+      tags: [pages]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          description: Page removed from favorites
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+
+  # Tag Endpoints
+  /api/tags:
+    get:
+      summary: List all tags
+      tags: [tags]
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Tag'
+    
+    post:
+      summary: Create a new tag
+      tags: [tags]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '201':
+          description: Tag created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Tag'
+
+  /api/tags/{tagId}:
+    get:
+      summary: Get tag by ID
+      tags: [tags]
+      parameters:
+        - $ref: '#/components/parameters/TagId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Tag'
+    
+    put:
+      summary: Update tag
+      tags: [tags]
+      parameters:
+        - $ref: '#/components/parameters/TagId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTagRequest'
+      responses:
+        '200':
+          description: Tag updated successfully
+    
+    delete:
+      summary: Delete tag
+      tags: [tags]
+      description: Delete tag and remove from all pages
+      parameters:
+        - $ref: '#/components/parameters/TagId'
+      responses:
+        '200':
+          description: Tag deleted successfully
+
+  /api/tags/{tagId}/pages:
+    get:
+      summary: Get all pages with a specific tag
+      tags: [tags]
+      parameters:
+        - $ref: '#/components/parameters/TagId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Page'
+
+  # Search Endpoints
+  /api/search:
+    get:
+      summary: Full-text search across all pages
+      tags: [search]
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+        - name: notebook_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by notebook
+        - name: section_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by section
+        - name: tag_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by tag
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SearchResult'
+                      total:
+                        type: integer
+                      query:
+                        type: string
+
+  # Export/Import Endpoints
+  /api/notebooks/{notebookId}/export:
+    get:
+      summary: Export notebook
+      tags: [notebooks]
+      description: Export notebook with all sections and pages as JSON
+      parameters:
+        - $ref: '#/components/parameters/NotebookId'
+      responses:
+        '200':
+          description: Export file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotebookExport'
+
+  /api/pages/{pageId}/export:
+    get:
+      summary: Export page as markdown
+      tags: [pages]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          description: Markdown file
+          content:
+            text/markdown:
+              schema:
+                type: string
+
+  /api/import:
+    post:
+      summary: Import notebook from JSON
+      tags: [notebooks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotebookExport'
+      responses:
+        '201':
+          description: Import successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Notebook'
+
+components:
+  parameters:
+    NotebookId:
+      name: notebookId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the notebook
+    
+    SectionId:
+      name: sectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the section
+    
+    PageId:
+      name: pageId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the page
+    
+    TagId:
+      name: tagId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the tag
+
+  schemas:
+    Notebook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          example: '#0078D4'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        section_count:
+          type: integer
+          description: Number of sections in this notebook
+    
+    CreateNotebookRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          default: '#0078D4'
+    
+    UpdateNotebookRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+    
+    Section:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        notebook_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        display_order:
+          type: integer
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        page_count:
+          type: integer
+    
+    CreateSectionRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+    
+    UpdateSectionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        display_order:
+          type: integer
+          minimum: 0
+    
+    Page:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        section_id:
+          type: string
+          format: uuid
+        parent_page_id:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+        preview:
+          type: string
+          description: First 200 characters of content
+        display_order:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    
+    PageDetail:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: string
+              description: Full markdown content
+            content_html:
+              type: string
+              description: Rendered HTML content
+            subpages:
+              type: array
+              items:
+                $ref: '#/components/schemas/Page'
+    
+    CreatePageRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+        content:
+          type: string
+          default: ''
+        parent_page_id:
+          type: string
+          format: uuid
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+          description: Array of tag names
+    
+    UpdatePageRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+        created_at:
+          type: string
+          format: date-time
+        page_count:
+          type: integer
+    
+    CreateTagRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          default: '#6C757D'
+    
+    UpdateTagRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+    
+    SearchResult:
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/Page'
+        matches:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                enum: [title, content]
+              snippet:
+                type: string
+                description: Text snippet with search term highlighted
+        rank:
+          type: number
+          description: Search relevance score
+    
+    NotebookExport:
+      type: object
+      properties:
+        notebook:
+          $ref: '#/components/schemas/Notebook'
+        sections:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Section'
+              - type: object
+                properties:
+                  pages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PageDetail'
+    
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+    
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+        details:
+          type: object
+          nullable: true
+
+  responses:
+    BadRequest:
+      description: Bad request - validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

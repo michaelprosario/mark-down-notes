@@ -1,0 +1,16 @@
+<!-- Pages List Component -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h6 class="mb-0">Pages</h6>
+    <button class="btn btn-sm btn-outline-primary" id="btnNewPage" data-bs-toggle="modal" data-bs-target="#pageModal" disabled>
+        <i class="bi bi-plus-lg"></i> New Page
+    </button>
+</div>
+<div id="pagesListContainer">
+    <div class="text-center text-muted py-4" id="pagesPlaceholder">
+        <i class="bi bi-file-earmark-text" style="font-size: 2rem;"></i>
+        <p class="mt-2 small">Select a section to view pages</p>
+    </div>
+    <div class="list-group d-none" id="pagesList">
+        <!-- Pages will be dynamically loaded here -->
+    </div>
+</div>

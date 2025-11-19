@@ -1,0 +1,183 @@
+/* Custom styles for Notebook Management */
+
+:root {
+    --sidebar-bg: #f8f9fa;
+    --border-color: #dee2e6;
+    --hover-bg: #e9ecef;
+}
+
+body {
+    overflow: hidden;
+}
+
+main {
+    height: calc(100vh - 56px);
+}
+
+.notebooks-sidebar,
+.sections-area,
+.page-editor {
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+}
+
+.notebooks-sidebar {
+    background-color: var(--sidebar-bg);
+}
+
+.notebook-item {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.notebook-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.notebook-item.active {
+    background-color: #fff;
+    border-left-color: #0d6efd;
+    font-weight: 600;
+}
+
+.section-tab {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s;
+}
+
+.section-tab:hover {
+    background-color: var(--hover-bg);
+}
+
+.section-tab.active {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.page-item {
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.page-item.active {
+    background-color: #e7f1ff;
+    border-left: 3px solid #0d6efd;
+}
+
+.page-title {
+    font-weight: 500;
+    flex-grow: 1;
+}
+
+.page-preview {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+.save-indicator {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    background-color: #198754;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1050;
+}
+
+.save-indicator.show {
+    opacity: 1;
+}
+
+.save-indicator.saving {
+    background-color: #0dcaf0;
+}
+
+.save-indicator.error {
+    background-color: #dc3545;
+}
+
+/* Editor styles */
+.page-editor-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+}
+
+.page-editor-content {
+    padding: 2rem;
+    background-color: #fff;
+}
+
+#pageTitle {
+    border: none;
+    font-size: 2rem;
+    font-weight: 600;
+    width: 100%;
+    outline: none;
+}
+
+#pageTitle:focus {
+    outline: none;
+    border-bottom: 2px solid #0d6efd;
+}
+
+.markdown-editor {
+    min-height: 60vh;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .notebooks-sidebar,
+    .sections-area {
+        height: auto;
+        max-height: 40vh;
+    }
+
+    .page-editor {
+        height: 60vh;
+    }
+}
+
+/* Loading spinner */
+.spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+/* Tags */
+.tag-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    margin: 0.125rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tag-badge:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}

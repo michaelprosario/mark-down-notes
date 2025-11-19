@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Notebook Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <!-- Notebooks Sidebar -->
+        {% include "components/notebooks_sidebar.html" %}
+
+        <!-- Sections and Pages Area -->
+        <div class="col-md-3 sections-area p-0 border-start">
+            <!-- Sections Tabs -->
+            {% include "components/sections_tabs.html" %}
+            
+            <!-- Pages List -->
+            {% include "components/pages_list.html" %}
+        </div>
+
+        <!-- Page Content Editor -->
+        <div class="col-md-7 page-editor p-0 border-start">
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen" class="text-center text-muted p-5" style="margin-top: 20vh;">
+                <i class="bi bi-file-earmark-text" style="font-size: 4rem;"></i>
+                <h4 class="mt-3">Welcome to Notebook Management</h4>
+                <p>Create a notebook to get started</p>
+            </div>
+            
+            <!-- Page Editor -->
+            <div id="pageEditor" class="d-none h-100">
+                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                    <div>
+                        <h4 id="currentPageTitle" class="mb-0">Page Title</h4>
+                        <small id="pageMetadata" class="text-muted">Last updated: </small>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary" id="btnEditPage">
+                            <i class="bi bi-pencil"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" id="btnDeletePageBtn">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                <div class="p-4" style="overflow-y: auto; height: calc(100% - 80px);">
+                    <div id="pageContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+{% include "components/modals.html" %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/notebooks.js"></script>
+<script src="/static/js/sections.js"></script>
+<script src="/static/js/pages.js"></script>
+{% endblock %}
