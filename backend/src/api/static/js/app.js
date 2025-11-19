@@ -249,4 +249,3 @@ document.addEventListener('DOMContentLoaded', () => {
     AppManager.init();
     window.AppManager = AppManager;
 });
-const app = new App();
