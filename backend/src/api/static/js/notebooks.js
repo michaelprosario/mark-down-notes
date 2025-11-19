@@ -165,11 +165,46 @@ const NotebookManager = {
                 throw new Error(error.detail || 'Failed to save notebook');
             }
             
-            bootstrap.Modal.getInstance(document.getElementById('notebookModal')).hide();
+            // Close modal properly
+            const modalEl = document.getElementById('notebookModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            
+            // Remove any lingering backdrops
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+            
+            // Reload notebooks
             await this.loadNotebooks();
+            
+            // Show success message
+            if (window.AppManager) {
+                AppManager.showSuccess(notebookId ? 'Notebook updated successfully' : 'Notebook created successfully');
+            }
         } catch (error) {
             console.error('Error saving notebook:', error);
-            alert('Error: ' + error.message);
+            
+            // Close modal and cleanup even on error
+            const modalEl = document.getElementById('notebookModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+            
+            // Show error message
+            if (window.AppManager) {
+                AppManager.showError('Error: ' + error.message);
+            } else {
+                alert('Error: ' + error.message);
+            }
         }
     },
     

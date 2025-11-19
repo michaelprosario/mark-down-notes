@@ -39,6 +39,12 @@ const PageManager = {
     async loadPages(sectionId) {
         this.currentSectionId = sectionId;
         
+        // Enable the "New Page" button
+        const btnNewPage = document.getElementById('btnNewPage');
+        if (btnNewPage) {
+            btnNewPage.removeAttribute('disabled');
+        }
+        
         try {
             const response = await fetch(`/api/pages/?section_id=${sectionId}`);
             if (!response.ok) throw new Error('Failed to load pages');
@@ -209,18 +215,55 @@ const PageManager = {
                 throw new Error(error.detail || 'Failed to save page');
             }
             
-            bootstrap.Modal.getInstance(document.getElementById('pageModal')).hide();
+            // Get the page data if creating new
+            const newPage = !pageId ? await response.json() : null;
+            
+            // Close modal properly
+            const modalEl = document.getElementById('pageModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            
+            // Remove any lingering backdrops
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+            
+            // Reload pages and select the current/new page
             await this.loadPages(this.currentSectionId);
             
-            if (!pageId) {
-                const newPage = await response.json();
+            if (newPage) {
                 this.selectPage(newPage.id);
             } else {
                 this.selectPage(pageId);
             }
+            
+            // Show success message
+            if (window.AppManager) {
+                AppManager.showSuccess(pageId ? 'Page updated successfully' : 'Page created successfully');
+            }
         } catch (error) {
             console.error('Error saving page:', error);
-            alert('Error: ' + error.message);
+            
+            // Close modal and cleanup even on error
+            const modalEl = document.getElementById('pageModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+            
+            // Show error message
+            if (window.AppManager) {
+                AppManager.showError('Error: ' + error.message);
+            } else {
+                alert('Error: ' + error.message);
+            }
         }
     },
     
@@ -265,6 +308,12 @@ const PageManager = {
         
         placeholder?.classList.remove('d-none');
         list?.classList.add('d-none');
+        
+        // Disable the "New Page" button
+        const btnNewPage = document.getElementById('btnNewPage');
+        if (btnNewPage) {
+            btnNewPage.setAttribute('disabled', 'disabled');
+        }
         
         document.getElementById('welcomeScreen')?.classList.remove('d-none');
         document.getElementById('pageEditor')?.classList.add('d-none');

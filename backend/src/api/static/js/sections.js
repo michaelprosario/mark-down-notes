@@ -29,6 +29,12 @@ const SectionManager = {
     async loadSections(notebookId) {
         this.currentNotebookId = notebookId;
         
+        // Enable the "Add Section" button
+        const btnNewSection = document.getElementById('btnNewSection');
+        if (btnNewSection) {
+            btnNewSection.removeAttribute('disabled');
+        }
+        
         try {
             const response = await fetch(`/api/sections/?notebook_id=${notebookId}`);
             if (!response.ok) throw new Error('Failed to load sections');
@@ -150,11 +156,46 @@ const SectionManager = {
                 throw new Error(error.detail || 'Failed to save section');
             }
             
-            bootstrap.Modal.getInstance(document.getElementById('sectionModal')).hide();
+            // Close modal properly
+            const modalEl = document.getElementById('sectionModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            
+            // Remove any lingering backdrops
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+            
+            // Reload sections
             await this.loadSections(this.currentNotebookId);
+            
+            // Show success message
+            if (window.AppManager) {
+                AppManager.showSuccess(sectionId ? 'Section updated successfully' : 'Section created successfully');
+            }
         } catch (error) {
             console.error('Error saving section:', error);
-            alert('Error: ' + error.message);
+            
+            // Close modal and cleanup even on error
+            const modalEl = document.getElementById('sectionModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+            
+            // Show error message
+            if (window.AppManager) {
+                AppManager.showError('Error: ' + error.message);
+            } else {
+                alert('Error: ' + error.message);
+            }
         }
     },
     
@@ -200,6 +241,12 @@ const SectionManager = {
         
         placeholder?.classList.remove('d-none');
         list?.classList.add('d-none');
+        
+        // Disable the "Add Section" button
+        const btnNewSection = document.getElementById('btnNewSection');
+        if (btnNewSection) {
+            btnNewSection.setAttribute('disabled', 'disabled');
+        }
         
         if (window.PageManager) {
             PageManager.clearPages();
