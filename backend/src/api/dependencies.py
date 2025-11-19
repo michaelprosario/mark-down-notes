@@ -4,6 +4,9 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.infrastructure.config.database import AsyncSessionLocal
+from src.infrastructure.data.repositories.notebook_repository import NotebookRepository
+from src.infrastructure.data.repositories.section_repository import SectionRepository
+from src.infrastructure.data.repositories.page_repository import PageRepository
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
@@ -29,19 +32,17 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
             await session.close()
 
 
-# Repository factory dependencies (to be implemented in Phase 3)
-# def get_notebook_repository(db: AsyncSession = Depends(get_db)) -> INotebookRepository:
-#     """Get notebook repository instance."""
-#     return NotebookRepository(db)
+def get_notebook_repository(db: AsyncSession) -> NotebookRepository:
+    """Get notebook repository instance."""
+    return NotebookRepository(db)
 
-# def get_section_repository(db: AsyncSession = Depends(get_db)) -> ISectionRepository:
-#     """Get section repository instance."""
-#     return SectionRepository(db)
 
-# def get_page_repository(db: AsyncSession = Depends(get_db)) -> IPageRepository:
-#     """Get page repository instance."""
-#     return PageRepository(db)
+def get_section_repository(db: AsyncSession) -> SectionRepository:
+    """Get section repository instance."""
+    return SectionRepository(db)
 
-# def get_tag_repository(db: AsyncSession = Depends(get_db)) -> ITagRepository:
-#     """Get tag repository instance."""
-#     return TagRepository(db)
+
+def get_page_repository(db: AsyncSession) -> PageRepository:
+    """Get page repository instance."""
+    return PageRepository(db)
+
