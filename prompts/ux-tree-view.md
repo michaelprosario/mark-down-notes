@@ -1,0 +1,6 @@
+- js is located here: backend/src/api/static
+- html is located here: backend/src/api/templates
+- I do like the object heirachy of notebook > sections > pages
+- I would prefer the use of a tree view for sections and pages
+- Rework the whole ux for the notes app
+- I should be able to edit pages with a markdown editor 

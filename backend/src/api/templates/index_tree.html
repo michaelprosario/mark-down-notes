@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteApp - Tree View</title>
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- EasyMDE (Markdown Editor) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/tree-view.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container-fluid" style="padding: 8px 16px;">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-journal-code"></i> NoteApp
+            </a>
+            <div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main App Container -->
+    <main>
+        <div class="app-container">
+            <!-- Left Sidebar - Notebooks -->
+            <div class="notebooks-sidebar">
+                <div class="sidebar-header">
+                    <span class="sidebar-title">Notebooks</span>
+                </div>
+                <div class="search-box">
+                    <input type="text" class="search-input" id="notebookSearch" placeholder="Search all notes...">
+                </div>
+                <div class="notebooks-list" id="notebooksList">
+                    <!-- Notebooks will be loaded here -->
+                </div>
+                <div style="padding: 12px; border-top: 1px solid var(--border-color);">
+                    <button class="btn-new-notebook" id="btnNewNotebook">
+                        <i class="bi bi-plus-lg"></i> New Notebook
+                    </button>
+                </div>
+            </div>
+
+            <!-- Middle Panel - Tree View -->
+            <div class="tree-view-panel">
+                <div class="sidebar-header">
+                    <span class="sidebar-title" id="currentNotebookTitle">Work Projects</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="tree-action-btn" id="btnNewSection" title="New Section" disabled>
+                            <i class="bi bi-folder-plus"></i>
+                        </button>
+                        <button class="tree-action-btn" id="btnCollapseAll" title="Collapse All">
+                            <i class="bi bi-chevron-contract"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="tree-view-container" id="treeViewContainer">
+                    <!-- Tree view will be loaded here -->
+                    <div class="empty-state" id="treeEmptyState">
+                        Select a notebook to view its contents
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Editor -->
+            <div class="editor-panel">
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <h4>Select a page to get started</h4>
+                    <p>Choose a page from the list on the left to view its content, or create a new page to start writing.</p>
+                </div>
+
+                <!-- Editor -->
+                <div id="editorContainer" style="display: none; height: 100%; flex-direction: column;">
+                    <div class="editor-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h1 class="editor-title" id="pageTitle">Page Title</h1>
+                                <div class="editor-meta" id="pageMeta">Last updated: Just now</div>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-new-notebook" id="btnSavePage" style="background-color: #2ea043;">
+                                    <i class="bi bi-check-lg"></i> Save
+                                </button>
+                                <button class="tree-action-btn delete" id="btnDeletePage" style="font-size: 1rem;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="editor-content">
+                        <textarea id="markdownEditor"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    
+    <!-- Create/Edit Notebook Modal -->
+    <div id="notebookModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3 id="notebookModalTitle">Create Notebook</h3>
+            <form id="notebookForm">
+                <input type="hidden" id="notebookId">
+                <div>
+                    <label>Name</label>
+                    <input type="text" id="notebookName" required>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea id="notebookDescription" rows="3"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" id="btnCancelNotebook">Cancel</button>
+                    <button type="submit" class="btn-modal-submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create/Edit Section Modal -->
+    <div id="sectionModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3 id="sectionModalTitle">Create Section</h3>
+            <form id="sectionForm">
+                <input type="hidden" id="sectionId">
+                <input type="hidden" id="sectionNotebookId">
+                <div>
+                    <label>Name</label>
+                    <input type="text" id="sectionName" required>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea id="sectionDescription" rows="3"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" id="btnCancelSection">Cancel</button>
+                    <button type="submit" class="btn-modal-submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create/Edit Page Modal -->
+    <div id="pageModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3 id="pageModalTitle">Create Page</h3>
+            <form id="pageForm">
+                <input type="hidden" id="pageId">
+                <input type="hidden" id="pageSectionId">
+                <div>
+                    <label>Title</label>
+                    <input type="text" id="pageFormTitle" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" id="btnCancelPage">Cancel</button>
+                    <button type="submit" class="btn-modal-submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3>Confirm Delete</h3>
+            <p id="deleteMessage" style="color: var(--text-secondary); margin-bottom: 20px;">Are you sure you want to delete this item?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-cancel" id="btnCancelDelete">Cancel</button>
+                <button type="button" class="btn-modal-delete" id="btnConfirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EasyMDE (Markdown Editor) -->
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="/static/js/tree-view-app.js"></script>
+</body>
+</html>

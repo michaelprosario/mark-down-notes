@@ -73,6 +73,12 @@ async def health_check():
 @app.get("/")
 async def root(request: Request):
     """Root endpoint - serves the main UI."""
+    return templates.TemplateResponse("index_tree.html", {"request": request})
+
+# Legacy UI endpoint
+@app.get("/legacy")
+async def legacy_ui(request: Request):
+    """Legacy UI endpoint."""
     return templates.TemplateResponse("index.html", {"request": request})
 
 

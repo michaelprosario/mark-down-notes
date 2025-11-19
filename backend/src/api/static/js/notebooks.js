@@ -54,16 +54,16 @@ const NotebookManager = {
                         <i class="bi bi-journal-text me-2" style="color: ${this.escapeHtml(notebook.color)}"></i>
                         ${this.escapeHtml(notebook.name)}
                     </span>
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-link text-primary p-0 me-2" 
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button class="btn btn-sm btn-light border" 
                                 onclick="NotebookManager.editNotebook('${notebook.id}'); event.stopPropagation(); return false;"
-                                title="Edit">
-                            <i class="bi bi-pencil"></i>
+                                title="Edit notebook">
+                            <i class="bi bi-pencil text-primary"></i>
                         </button>
-                        <button class="btn btn-link text-danger p-0" 
+                        <button class="btn btn-sm btn-light border" 
                                 onclick="NotebookManager.deleteNotebook('${notebook.id}'); event.stopPropagation(); return false;"
-                                title="Delete">
-                            <i class="bi bi-trash"></i>
+                                title="Delete notebook">
+                            <i class="bi bi-trash text-danger"></i>
                         </button>
                     </div>
                 </div>
@@ -232,10 +232,21 @@ const NotebookManager = {
                         }
                     }
                     
+                    // Show success message
+                    if (window.AppManager) {
+                        AppManager.showSuccess('Notebook deleted successfully');
+                    }
+                    
                     await this.loadNotebooks();
                 } catch (error) {
                     console.error('Error deleting notebook:', error);
-                    alert('Error: ' + error.message);
+                    
+                    // Show error message
+                    if (window.AppManager) {
+                        AppManager.showError('Error: ' + error.message);
+                    } else {
+                        alert('Error: ' + error.message);
+                    }
                 }
             }
         );
