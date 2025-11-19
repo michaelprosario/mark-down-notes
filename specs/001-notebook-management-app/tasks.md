@@ -82,76 +82,76 @@
 
 ### Domain Models (Core Layer)
 
-- [ ] T025 [P] [US1] Create Notebook entity in backend/src/core/domain/notebook.py with validation methods
-- [ ] T026 [P] [US1] Create Section entity in backend/src/core/domain/section.py with validation methods
-- [ ] T027 [P] [US1] Create Page entity in backend/src/core/domain/page.py with validation methods
+- [X] T025 [P] [US1] Create Notebook entity in backend/src/core/domain/notebook.py with validation methods
+- [X] T026 [P] [US1] Create Section entity in backend/src/core/domain/section.py with validation methods
+- [X] T027 [P] [US1] Create Page entity in backend/src/core/domain/page.py with validation methods
 
 ### Repository Interfaces (Core Layer)
 
-- [ ] T028 [P] [US1] Define INotebookRepository interface in backend/src/core/interfaces/repositories.py
-- [ ] T029 [P] [US1] Define ISectionRepository interface in backend/src/core/interfaces/repositories.py
-- [ ] T030 [P] [US1] Define IPageRepository interface in backend/src/core/interfaces/repositories.py
+- [X] T028 [P] [US1] Define INotebookRepository interface in backend/src/core/interfaces/repositories.py
+- [X] T029 [P] [US1] Define ISectionRepository interface in backend/src/core/interfaces/repositories.py
+- [X] T030 [P] [US1] Define IPageRepository interface in backend/src/core/interfaces/repositories.py
 
 ### ORM Models (Infrastructure Layer)
 
-- [ ] T031 [P] [US1] Create NotebookModel SQLAlchemy model in backend/src/infrastructure/data/models/notebook_model.py
-- [ ] T032 [P] [US1] Create SectionModel SQLAlchemy model in backend/src/infrastructure/data/models/section_model.py
-- [ ] T033 [P] [US1] Create PageModel SQLAlchemy model in backend/src/infrastructure/data/models/page_model.py
+- [X] T031 [P] [US1] Create NotebookModel SQLAlchemy model in backend/src/infrastructure/data/models/notebook_model.py
+- [X] T032 [P] [US1] Create SectionModel SQLAlchemy model in backend/src/infrastructure/data/models/section_model.py
+- [X] T033 [P] [US1] Create PageModel SQLAlchemy model in backend/src/infrastructure/data/models/page_model.py
 
 ### Repository Implementations (Infrastructure Layer)
 
-- [ ] T034 [US1] Implement NotebookRepository in backend/src/infrastructure/data/repositories/notebook_repository.py
-- [ ] T035 [US1] Implement SectionRepository in backend/src/infrastructure/data/repositories/section_repository.py
-- [ ] T036 [US1] Implement PageRepository in backend/src/infrastructure/data/repositories/page_repository.py
+- [X] T034 [US1] Implement NotebookRepository in backend/src/infrastructure/data/repositories/notebook_repository.py
+- [X] T035 [US1] Implement SectionRepository in backend/src/infrastructure/data/repositories/section_repository.py
+- [X] T036 [US1] Implement PageRepository in backend/src/infrastructure/data/repositories/page_repository.py
 
 ### Commands & Queries (Core Layer)
 
-- [ ] T037 [P] [US1] Create CreateNotebookCommand in backend/src/core/commands/create_notebook_command.py
-- [ ] T038 [P] [US1] Create UpdateNotebookCommand in backend/src/core/commands/update_notebook_command.py
-- [ ] T039 [P] [US1] Create DeleteNotebookCommand in backend/src/core/commands/delete_notebook_command.py
-- [ ] T040 [P] [US1] Create CreateSectionCommand in backend/src/core/commands/create_section_command.py
-- [ ] T041 [P] [US1] Create UpdateSectionCommand in backend/src/core/commands/update_section_command.py
-- [ ] T042 [P] [US1] Create DeleteSectionCommand in backend/src/core/commands/delete_section_command.py
-- [ ] T043 [P] [US1] Create CreatePageCommand in backend/src/core/commands/create_page_command.py
-- [ ] T044 [P] [US1] Create UpdatePageCommand in backend/src/core/commands/update_page_command.py
-- [ ] T045 [P] [US1] Create DeletePageCommand in backend/src/core/commands/delete_page_command.py
-- [ ] T046 [P] [US1] Create GetNotebooksQuery in backend/src/core/queries/get_notebooks_query.py
-- [ ] T047 [P] [US1] Create GetSectionsQuery in backend/src/core/queries/get_sections_query.py
-- [ ] T048 [P] [US1] Create GetPagesQuery in backend/src/core/queries/get_pages_query.py
+- [X] T037 [P] [US1] Create CreateNotebookCommand in backend/src/core/commands/create_notebook_command.py
+- [X] T038 [P] [US1] Create UpdateNotebookCommand in backend/src/core/commands/update_notebook_command.py
+- [X] T039 [P] [US1] Create DeleteNotebookCommand in backend/src/core/commands/delete_notebook_command.py
+- [X] T040 [P] [US1] Create CreateSectionCommand in backend/src/core/commands/create_section_command.py
+- [X] T041 [P] [US1] Create UpdateSectionCommand in backend/src/core/commands/update_section_command.py
+- [X] T042 [P] [US1] Create DeleteSectionCommand in backend/src/core/commands/delete_section_command.py
+- [X] T043 [P] [US1] Create CreatePageCommand in backend/src/core/commands/create_page_command.py
+- [X] T044 [P] [US1] Create UpdatePageCommand in backend/src/core/commands/update_page_command.py
+- [X] T045 [P] [US1] Create DeletePageCommand in backend/src/core/commands/delete_page_command.py
+- [X] T046 [P] [US1] Create GetNotebooksQuery in backend/src/core/queries/get_notebooks_query.py
+- [X] T047 [P] [US1] Create GetSectionsQuery in backend/src/core/queries/get_sections_query.py
+- [X] T048 [P] [US1] Create GetPagesQuery in backend/src/core/queries/get_pages_query.py
 
 ### Services (Core Layer)
 
-- [ ] T049 [US1] Implement CreateNotebookService in backend/src/core/services/create_notebook_service.py
-- [ ] T050 [US1] Implement UpdateNotebookService in backend/src/core/services/update_notebook_service.py
-- [ ] T051 [US1] Implement DeleteNotebookService in backend/src/core/services/delete_notebook_service.py (with cascade validation)
-- [ ] T052 [US1] Implement GetNotebooksService in backend/src/core/services/get_notebooks_service.py
-- [ ] T053 [US1] Implement CreateSectionService in backend/src/core/services/create_section_service.py
-- [ ] T054 [US1] Implement UpdateSectionService in backend/src/core/services/update_section_service.py
-- [ ] T055 [US1] Implement DeleteSectionService in backend/src/core/services/delete_section_service.py (with cascade validation)
-- [ ] T056 [US1] Implement GetSectionsService in backend/src/core/services/get_sections_service.py
-- [ ] T057 [US1] Implement ReorderSectionsService in backend/src/core/services/reorder_sections_service.py
-- [ ] T058 [US1] Implement CreatePageService in backend/src/core/services/create_page_service.py
-- [ ] T059 [US1] Implement UpdatePageService in backend/src/core/services/update_page_service.py
-- [ ] T060 [US1] Implement DeletePageService in backend/src/core/services/delete_page_service.py
-- [ ] T061 [US1] Implement GetPagesService in backend/src/core/services/get_pages_service.py
+- [X] T049 [US1] Implement CreateNotebookService in backend/src/core/services/create_notebook_service.py
+- [X] T050 [US1] Implement UpdateNotebookService in backend/src/core/services/update_notebook_service.py
+- [X] T051 [US1] Implement DeleteNotebookService in backend/src/core/services/delete_notebook_service.py (with cascade validation)
+- [X] T052 [US1] Implement GetNotebooksService in backend/src/core/services/get_notebooks_service.py
+- [X] T053 [US1] Implement CreateSectionService in backend/src/core/services/create_section_service.py
+- [X] T054 [US1] Implement UpdateSectionService in backend/src/core/services/update_section_service.py
+- [X] T055 [US1] Implement DeleteSectionService in backend/src/core/services/delete_section_service.py (with cascade validation)
+- [X] T056 [US1] Implement GetSectionsService in backend/src/core/services/get_sections_service.py
+- [X] T057 [US1] Implement ReorderSectionsService in backend/src/core/services/reorder_sections_service.py
+- [X] T058 [US1] Implement CreatePageService in backend/src/core/services/create_page_service.py
+- [X] T059 [US1] Implement UpdatePageService in backend/src/core/services/update_page_service.py
+- [X] T060 [US1] Implement DeletePageService in backend/src/core/services/delete_page_service.py
+- [X] T061 [US1] Implement GetPagesService in backend/src/core/services/get_pages_service.py
 
 ### API Endpoints (Presentation Layer)
 
-- [ ] T062 [US1] Implement POST /api/notebooks endpoint in backend/src/api/routes/notebooks.py
-- [ ] T063 [US1] Implement GET /api/notebooks endpoint in backend/src/api/routes/notebooks.py
-- [ ] T064 [US1] Implement GET /api/notebooks/{id} endpoint in backend/src/api/routes/notebooks.py
-- [ ] T065 [US1] Implement PUT /api/notebooks/{id} endpoint in backend/src/api/routes/notebooks.py
-- [ ] T066 [US1] Implement DELETE /api/notebooks/{id} endpoint in backend/src/api/routes/notebooks.py
-- [ ] T067 [US1] Implement POST /api/notebooks/{id}/sections endpoint in backend/src/api/routes/sections.py
-- [ ] T068 [US1] Implement GET /api/notebooks/{id}/sections endpoint in backend/src/api/routes/sections.py
-- [ ] T069 [US1] Implement PUT /api/sections/{id} endpoint in backend/src/api/routes/sections.py
-- [ ] T070 [US1] Implement DELETE /api/sections/{id} endpoint in backend/src/api/routes/sections.py
-- [ ] T071 [US1] Implement POST /api/sections/{id}/reorder endpoint in backend/src/api/routes/sections.py
-- [ ] T072 [US1] Implement POST /api/sections/{id}/pages endpoint in backend/src/api/routes/pages.py
-- [ ] T073 [US1] Implement GET /api/sections/{id}/pages endpoint in backend/src/api/routes/pages.py
-- [ ] T074 [US1] Implement GET /api/pages/{id} endpoint in backend/src/api/routes/pages.py
-- [ ] T075 [US1] Implement PUT /api/pages/{id} endpoint in backend/src/api/routes/pages.py
-- [ ] T076 [US1] Implement DELETE /api/pages/{id} endpoint in backend/src/api/routes/pages.py
+- [X] T062 [US1] Implement POST /api/notebooks endpoint in backend/src/api/routes/notebooks.py
+- [X] T063 [US1] Implement GET /api/notebooks endpoint in backend/src/api/routes/notebooks.py
+- [X] T064 [US1] Implement GET /api/notebooks/{id} endpoint in backend/src/api/routes/notebooks.py
+- [X] T065 [US1] Implement PUT /api/notebooks/{id} endpoint in backend/src/api/routes/notebooks.py
+- [X] T066 [US1] Implement DELETE /api/notebooks/{id} endpoint in backend/src/api/routes/notebooks.py
+- [X] T067 [US1] Implement POST /api/notebooks/{id}/sections endpoint in backend/src/api/routes/sections.py
+- [X] T068 [US1] Implement GET /api/notebooks/{id}/sections endpoint in backend/src/api/routes/sections.py
+- [X] T069 [US1] Implement PUT /api/sections/{id} endpoint in backend/src/api/routes/sections.py
+- [X] T070 [US1] Implement DELETE /api/sections/{id} endpoint in backend/src/api/routes/sections.py
+- [X] T071 [US1] Implement POST /api/sections/{id}/reorder endpoint in backend/src/api/routes/sections.py
+- [X] T072 [US1] Implement POST /api/sections/{id}/pages endpoint in backend/src/api/routes/pages.py
+- [X] T073 [US1] Implement GET /api/sections/{id}/pages endpoint in backend/src/api/routes/pages.py
+- [X] T074 [US1] Implement GET /api/pages/{id} endpoint in backend/src/api/routes/pages.py
+- [X] T075 [US1] Implement PUT /api/pages/{id} endpoint in backend/src/api/routes/pages.py
+- [X] T076 [US1] Implement DELETE /api/pages/{id} endpoint in backend/src/api/routes/pages.py
 
 ### UI Templates (Presentation Layer)
 
