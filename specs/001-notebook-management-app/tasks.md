@@ -52,23 +52,23 @@
 
 ### Database Setup
 
-- [ ] T014 Create database configuration in backend/src/infrastructure/config/database.py with async SQLAlchemy engine
-- [ ] T015 Create initial Alembic migration with all tables (notebooks, sections, pages, tags, page_tags) per data-model.md
-- [ ] T016 Add database indexes, constraints, and triggers (full-text search, foreign keys, unique constraints)
-- [ ] T017 [P] Create dependency injection providers in backend/src/api/dependencies.py (get_db, repository factories)
+- [X] T014 Create database configuration in backend/src/infrastructure/config/database.py with async SQLAlchemy engine
+- [X] T015 Create initial Alembic migration with all tables (notebooks, sections, pages, tags, page_tags) per data-model.md
+- [X] T016 Add database indexes, constraints, and triggers (full-text search, foreign keys, unique constraints)
+- [X] T017 [P] Create dependency injection providers in backend/src/api/dependencies.py (get_db, repository factories)
 
 ### API Infrastructure
 
-- [ ] T018 [P] Setup FastAPI routers structure in backend/src/api/routes/ (notebooks.py, sections.py, pages.py, tags.py, search.py)
-- [ ] T019 [P] Create error handling middleware in backend/src/api/middleware/error_handler.py
-- [ ] T020 [P] Setup CORS middleware configuration in backend/src/main.py
-- [ ] T021 [P] Create Pydantic settings configuration in backend/src/infrastructure/config/settings.py with validation
+- [X] T018 [P] Setup FastAPI routers structure in backend/src/api/routes/ (notebooks.py, sections.py, pages.py, tags.py, search.py)
+- [X] T019 [P] Create error handling middleware in backend/src/api/middleware/error_handler.py
+- [X] T020 [P] Setup CORS middleware configuration in backend/src/main.py
+- [X] T021 [P] Create Pydantic settings configuration in backend/src/infrastructure/config/settings.py with validation
 
 ### Frontend Foundation
 
-- [ ] T022 [P] Add Bootstrap 5 CDN links and custom CSS setup in backend/src/api/templates/base.html
-- [ ] T023 [P] Create responsive three-pane layout structure in backend/src/api/templates/index.html
-- [ ] T024 [P] Create custom CSS file backend/src/api/static/css/custom.css with notebook/section/page styling
+- [X] T022 [P] Add Bootstrap 5 CDN links and custom CSS setup in backend/src/api/templates/base.html
+- [X] T023 [P] Create responsive three-pane layout structure in backend/src/api/templates/index.html
+- [X] T024 [P] Create custom CSS file backend/src/api/static/css/custom.css with notebook/section/page styling
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 

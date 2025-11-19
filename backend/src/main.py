@@ -8,6 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.infrastructure.config.settings import get_settings
 from src.infrastructure.config.database import init_db
+from src.api.middleware.error_handler import error_handler_middleware
+
+# Import routers
+from src.api.routes import notebooks, sections, pages, tags, search
 
 
 @asynccontextmanager
@@ -41,6 +45,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Error handling middleware
+app.middleware("http")(error_handler_middleware)
+
+# Include API routers
+app.include_router(notebooks.router)
+app.include_router(sections.router)
+app.include_router(pages.router)
+app.include_router(tags.router)
+app.include_router(search.router)
+
 # Mount static files
 app.mount("/static", StaticFiles(directory="src/api/static"), name="static")
 
@@ -59,7 +73,6 @@ async def health_check():
 @app.get("/")
 async def root(request: Request):
     """Root endpoint - serves the main UI."""
-    from fastapi import Request
     return templates.TemplateResponse("index.html", {"request": request})
 
 
