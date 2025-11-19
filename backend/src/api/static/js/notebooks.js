@@ -54,7 +54,7 @@ const NotebookManager = {
                         <i class="bi bi-journal-text me-2" style="color: ${this.escapeHtml(notebook.color)}"></i>
                         ${this.escapeHtml(notebook.name)}
                     </span>
-                    <div class="btn-group btn-group-sm" role="group" style="opacity: 1;">
+                    <div class="btn-group btn-group-sm" role="group">
                         <button class="btn btn-sm btn-light border" 
                                 onclick="NotebookManager.editNotebook('${notebook.id}'); event.stopPropagation(); return false;"
                                 title="Edit notebook">

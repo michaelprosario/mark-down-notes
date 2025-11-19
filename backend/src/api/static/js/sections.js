@@ -21,6 +21,10 @@ const SectionManager = {
         document.getElementById('btnSaveSection')?.addEventListener('click', () => {
             this.saveSection();
         });
+        
+        document.getElementById('btnDeleteNotebook')?.addEventListener('click', () => {
+            this.deleteCurrentNotebook();
+        });
     },
     
     /**
@@ -29,10 +33,15 @@ const SectionManager = {
     async loadSections(notebookId) {
         this.currentNotebookId = notebookId;
         
-        // Enable the "Add Section" button
+        // Enable the "Add Section" and "Delete Notebook" buttons
         const btnNewSection = document.getElementById('btnNewSection');
         if (btnNewSection) {
             btnNewSection.removeAttribute('disabled');
+        }
+        
+        const btnDeleteNotebook = document.getElementById('btnDeleteNotebook');
+        if (btnDeleteNotebook) {
+            btnDeleteNotebook.removeAttribute('disabled');
         }
         
         try {
@@ -200,6 +209,17 @@ const SectionManager = {
     },
     
     /**
+     * Delete the current notebook
+     */
+    deleteCurrentNotebook() {
+        if (!this.currentNotebookId) return;
+        
+        if (window.NotebookManager) {
+            NotebookManager.deleteNotebook(this.currentNotebookId);
+        }
+    },
+    
+    /**
      * Delete section
      */
     deleteSection(sectionId) {
@@ -242,10 +262,15 @@ const SectionManager = {
         placeholder?.classList.remove('d-none');
         list?.classList.add('d-none');
         
-        // Disable the "Add Section" button
+        // Disable the "Add Section" and "Delete Notebook" buttons
         const btnNewSection = document.getElementById('btnNewSection');
         if (btnNewSection) {
             btnNewSection.setAttribute('disabled', 'disabled');
+        }
+        
+        const btnDeleteNotebook = document.getElementById('btnDeleteNotebook');
+        if (btnDeleteNotebook) {
+            btnDeleteNotebook.setAttribute('disabled', 'disabled');
         }
         
         if (window.PageManager) {
